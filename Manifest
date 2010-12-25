@@ -1,0 +1,13 @@
+README.rdoc
+Rakefile
+lib/bracket_notation.rb
+lib/bracket_notation/evaluator.rb
+lib/bracket_notation/expressions.rb
+lib/bracket_notation/expressions/expression.rb
+lib/bracket_notation/expressions/identifier.rb
+lib/bracket_notation/expressions/terminal.rb
+lib/bracket_notation/parser.rb
+lib/bracket_notation/scanner.rb
+lib/bracket_notation/token.rb
+lib/bracket_notation/version.rb
+Manifest

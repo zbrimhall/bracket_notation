@@ -1,0 +1,6 @@
+require File.join(File.dirname(__FILE__), "bracket_notation", "evaluator")
+require File.join(File.dirname(__FILE__), "bracket_notation", "expressions")
+require File.join(File.dirname(__FILE__), "bracket_notation", "parser")
+require File.join(File.dirname(__FILE__), "bracket_notation", "scanner")
+require File.join(File.dirname(__FILE__), "bracket_notation", "token")
+require File.join(File.dirname(__FILE__), "bracket_notation", "version")
