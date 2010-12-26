@@ -45,7 +45,7 @@ module BracketNotation # :nodoc:
     # Initializes and returns a new token of type +RBRACKET+.
     def self.RBRACKET; return self.new(RBRACKET); end
     
-    # Initializes and returns a new token of type +NAME+.
+    # Initializes and returns a new token of type +NAME+ with the given value.
     def self.NAME(value); return self.new(NAME, value); end
     
     # Initializes and returns a new token of type +EOL+.

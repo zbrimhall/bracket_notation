@@ -40,5 +40,3 @@ Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.ignore_pattern = %w(tmp/* script/* *.bbprojectd/*)
   p.development_dependencies = []
 end
-
-Dir[File.join(File.dirname(__FILE__), "tasks", "*.rake")].sort.each {|ext| load ext}

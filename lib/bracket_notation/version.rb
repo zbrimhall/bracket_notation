@@ -27,11 +27,12 @@
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1 unless const_defined? :MAJOR
-    MINOR = 0 unless const_defined? :MINOR
-    MAINT = 0 unless const_defined? :MAINT
+  module Version
+    MAJOR = 1
+    MINOR = 0
+    MAINT = 0
     
+    # Returns the current version string.
     def self.to_s;
       return "#{MAJOR.to_s}.#{MINOR.to_s}.#{MAINT.to_s}"
     end

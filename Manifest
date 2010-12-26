@@ -1,9 +1,7 @@
 CHANGELOG
 COPYING
-Manifest
 README.rdoc
 Rakefile
-bracket_notation.gemspec
 init.rb
 lib/bracket_notation.rb
 lib/bracket_notation/evaluator.rb
@@ -22,3 +20,4 @@ test/integration/parsing_test.rb
 test/test_helper.rb
 test/unit/expression_test.rb
 test/unit/token_test.rb
+Manifest
