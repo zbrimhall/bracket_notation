@@ -1,5 +1,10 @@
+CHANGELOG
+COPYING
+Manifest
 README.rdoc
 Rakefile
+bracket_notation.gemspec
+init.rb
 lib/bracket_notation.rb
 lib/bracket_notation/evaluator.rb
 lib/bracket_notation/expressions.rb
@@ -10,4 +15,10 @@ lib/bracket_notation/parser.rb
 lib/bracket_notation/scanner.rb
 lib/bracket_notation/token.rb
 lib/bracket_notation/version.rb
-Manifest
+test/functional/evaluator_test.rb
+test/functional/parser_test.rb
+test/functional/scanner_test.rb
+test/integration/parsing_test.rb
+test/test_helper.rb
+test/unit/expression_test.rb
+test/unit/token_test.rb
