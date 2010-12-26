@@ -4,10 +4,10 @@ module BracketNotation
     attr_reader :value
     
     # Constants that identify the different types of tokens
-    LBRACKET = "LBRACKET"
-    RBRACKET = "RBRACKET"
-    NAME = "NAME"
-    EOL = "EOL"
+    LBRACKET = "LBRACKET" unless const_defined? :LBRACKET
+    RBRACKET = "RBRACKET" unless const_defined? :RBRACKET
+    NAME = "NAME" unless const_defined? :NAME
+    EOL = "EOL" unless const_defined? :EOL
     
     # Convenience methods for generating new tokens
     def self.LBRACKET; return self.new(LBRACKET); end

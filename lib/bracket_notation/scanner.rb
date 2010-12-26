@@ -4,10 +4,10 @@ module BracketNotation
     
     attr_reader :input
     
-    UNRESERVED_CHARACTER = /[^\[\]\s]/
-    LBRACKET = "["
-    RBRACKET = "]"
-    EOL = nil
+    UNRESERVED_CHARACTER = /^[^\[\]\s]$/ unless const_defined? :UNRESERVED_CHARACTER
+    LBRACKET_CHARACTER = "[" unless const_defined? :LBRACKET_CHARACTER
+    RBRACKET_CHARACTER = "]" unless const_defined? :RBRACKET_CHARACTER
+    EOL_CHARACTER = nil unless const_defined? :EOL_CHARACTER
     
     def initialize(input)
       @input = input
@@ -44,9 +44,9 @@ module BracketNotation
       while(token.nil?)
         token = case read_char
           when UNRESERVED_CHARACTER: name_token
-          when LBRACKET: Token.LBRACKET
-          when RBRACKET: Token.RBRACKET
-          when EOL: Token.EOL
+          when LBRACKET_CHARACTER: Token.LBRACKET
+          when RBRACKET_CHARACTER: Token.RBRACKET
+          when EOL_CHARACTER: Token.EOL
           else nil
         end
       end
@@ -61,7 +61,7 @@ module BracketNotation
       @last_read = input[@pos, @chunk_size]
       @pos += @chunk_size
       
-      return @last_read
+      return @last_read || Token::EOL
     end
     
     # Look ahead to see what the next char will be, without updating @last_read

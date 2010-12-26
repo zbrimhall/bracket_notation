@@ -2,3 +2,4 @@ pkg
 doc
 manifest
 .DS_Store
+*.bbprojectd

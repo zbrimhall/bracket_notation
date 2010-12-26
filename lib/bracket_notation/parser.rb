@@ -6,6 +6,8 @@ module BracketNotation
     class ValidationError < RuntimeError; end
     
     def initialize(input)
+      validation_error "Parser input cannot be nil" if input.nil?
+      
       @input = input
       @data = scrub(input)
       validate
