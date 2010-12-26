@@ -1,0 +1,11 @@
+= Version History
+
+== 1.0.0 / 2010-12-26:
+
+* Wrote (more or less) complete documentation comments for all classes and
+  methods
+* Wrote a full suite of test cases that performs unit tests, functional tests,
+  and integration tests
+* Included a copy of the GNU GPLv3 in the root directory, and put GPL rights
+  notices at the top of every file
+* Packaged project up as a gem

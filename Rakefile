@@ -32,7 +32,8 @@ require 'echoe'
 require 'lib/bracket_notation'
 
 Echoe.new('bracket_notation', BracketNotation::Version) do |p|
-  p.description = "Generate a representation of a syntax tree using a string of bracket notation."
+  p.description = "Generates a representation of a syntax tree using a string of bracket notation."
+  p.summary = "Provides a parser for strings that have been marked up with the bracket notation commonly used by syntacticians. The parser generates an abstract tree representation of the syntax of the string."
   p.url = "http://github.com/zbrimhall/bracket_notation"
   p.author = "Cody Brimhall"
   p.email = "zbrimhall@gmail.com"
