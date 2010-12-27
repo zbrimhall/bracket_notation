@@ -1,5 +1,9 @@
 = Version History
 
+== 1.0.1 / 2010-12-26:
+
+* Very minor changes to build and deploy configuration
+
 == 1.0.0 / 2010-12-26:
 
 * Wrote (more or less) complete documentation comments for all classes and

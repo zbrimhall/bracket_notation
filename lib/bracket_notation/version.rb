@@ -30,7 +30,7 @@ module BracketNotation # :nodoc:
   module Version
     MAJOR = 1
     MINOR = 0
-    MAINT = 0
+    MAINT = 1
     
     # Returns the current version string.
     def self.to_s;
