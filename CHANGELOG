@@ -1,5 +1,19 @@
 = Version History
 
+== 1.0.4 / 2011-01-09:
+
+* Added a validation class method to the Parser class to help with error
+  checking in applications
+
+== 1.0.3 / 2011-01-08:
+
+* Trying to fix version detection when building gem
+
+== 1.0.2 / 2010-12-29:
+
+* Fixed some busted require statements
+* Expression#pretty_print writes to a string buffer instead of stdout
+
 == 1.0.1 / 2010-12-26:
 
 * Very minor changes to build and deploy configuration

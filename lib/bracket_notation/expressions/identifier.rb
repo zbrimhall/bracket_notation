@@ -54,8 +54,9 @@ module BracketNotation # :nodoc:
     
     # Prints a visual representation of the syntax tree.
     def pretty_print
-      super
-      @children.each {|child| child.pretty_print}
+      out = super
+      @children.each {|child| out << child.pretty_print}
+      out
     end
   end
 end

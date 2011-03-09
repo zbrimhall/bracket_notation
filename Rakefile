@@ -26,10 +26,10 @@
 # Copyright:: Copyright (c) 2010 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-require 'rubygems'
-require 'rake'
+($:.unshift File.expand_path(File.join( File.dirname(__FILE__), 'lib' ))).uniq!
+
 require 'echoe'
-require 'lib/bracket_notation'
+require 'bracket_notation/version'
 
 Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.description = "Generates a representation of a syntax tree using a string of bracket notation."
@@ -38,5 +38,5 @@ Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.author = "Cody Brimhall"
   p.email = "zbrimhall@gmail.com"
   p.ignore_pattern = %w(tmp/* script/* *.bbprojectd/*)
-  p.development_dependencies = []
+  p.development_dependencies = ['shoulda >=2.11.3']
 end

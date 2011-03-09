@@ -26,9 +26,9 @@
 # Copyright:: Copyright (c) 2010 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-require 'lib/bracket_notation/evaluator'
-require 'lib/bracket_notation/expressions'
-require 'lib/bracket_notation/parser'
-require 'lib/bracket_notation/scanner'
-require 'lib/bracket_notation/token'
-require 'lib/bracket_notation/version'
+require 'bracket_notation/evaluator'
+require 'bracket_notation/expressions'
+require 'bracket_notation/parser'
+require 'bracket_notation/scanner'
+require 'bracket_notation/token'
+require 'bracket_notation/version'

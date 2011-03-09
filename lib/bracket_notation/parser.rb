@@ -38,44 +38,17 @@ module BracketNotation # :nodoc:
     # validation process.
     class ValidationError < RuntimeError; end
     
-    # Saves the input string, as well as a copy of the input string that has
-    # been normalized and validated.
-    def initialize(input)
-      validation_error "Parser input cannot be nil" if input.nil?
-      
-      @input = input
-      @data = scrub(input)
-      validate
-    end
-    
-    # Scans and evaluates the input string, returning an expression tree.
-    def parse
-      scanner = Scanner.new(@data)
-      evaluator = Evaluator.new(scanner.scan)
-      expression = evaluator.evaluate
-    end
-    
-    private
-    
-    # Normalizes the input string to make it easier to parse.
-    def scrub(str)
-      output = str.gsub(/\t/, "")
-      output.gsub!(/\s+/, " ")
-      output.gsub!(/\] \[/, "][")
-      output.gsub!(/ \[/, "[")
-      
-      return output
-    end
-    
-    # Checks to see if the input is valid, i.e. it has a length, no unnamed
-    # nodes, and the bracket-nesting is balanced.
-    def validate
-      validation_error("Input string can't be empty.") if @data.length < 1
-      validation_error("All opening brackets must have a label.") if /\[\s*\[/ =~ @data
+    # Performs basic validation of a string without executing the entire parse
+    # process. Returns true if validation is successful; raises an exception if
+    # not.
+    def self.validate(input)
+      validation_error("parser input cannot be nil") if input.nil?
+      validation_error("input string can't be empty") if input.length < 1
+      validation_error("all opening brackets must have a label") if /\[\s*\[/ =~ input
       
       # Count the opening and closing brackets to make sure they're balanced
-      chars = @data.gsub(/[^\[\]]/, "").split(//)
-      validation_error("Opening and closing brackets must be balanced.") if chars.length % 2 != 0
+      chars = input.gsub(/[^\[\]]/, "").split(//)
+      validation_error("opening and closing brackets must be balanced") if chars.length % 2 != 0
       
       open_count, close_count = 0, 0
       
@@ -88,12 +61,35 @@ module BracketNotation # :nodoc:
         break if open_count < close_count
       end
       
-      validation_error("Opening and closing brackets must be properly nested.") if open_count != close_count
+      validation_error("opening and closing brackets must be properly nested") if open_count != close_count
+      
+      return true
     end
     
+    # Saves the input string, as well as a copy of the input string that has
+    # been normalized and validated.
+    def initialize(input)
+      @input = input
+      validate
+    end
+    
+    # Scans and evaluates the input string, returning an expression tree.
+    def parse
+      Evaluator.new(Scanner.new(@input).scan).evaluate
+    end
+    
+    private
+    
     # Raises a validation exception with the given message
-    def validation_error(message)
+    def self.validation_error(message)
       raise ValidationError, message
+    end
+    
+    # Performs basic validation of the input string without executing the entire
+    # parse process. Returns true if validation is successful; raises an
+    # exception if not.
+    def validate
+      self.class.validate(@input)
     end
   end
 end

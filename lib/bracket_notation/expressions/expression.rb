@@ -41,8 +41,9 @@ module BracketNotation # :nodoc:
     
     # Prints a visual representation of the syntax tree.
     def pretty_print
-      @depth.times {print "--"}
-      puts " #{@value}"
+      out = ""
+      @depth.times {out << "--"}
+      out << " #{@value}\n"
     end
   end
 end

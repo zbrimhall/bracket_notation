@@ -27,14 +27,14 @@
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 module BracketNotation # :nodoc:
-  module Version
+  module Version # :nodoc:
     MAJOR = 1
     MINOR = 0
-    MAINT = 1
+    MAINT = 4
     
     # Returns the current version string.
     def self.to_s;
-      return "#{MAJOR.to_s}.#{MINOR.to_s}.#{MAINT.to_s}"
+      return [MAJOR, MINOR, MAINT].join(".")
     end
   end
 end
