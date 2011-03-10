@@ -9,3 +9,42 @@ and small portions of his code have been incorporated in the parser.
 Author:: Cody Brimhall (mailto:brimhall@somuchwit.com)
 Copyright:: Copyright (c) 2010 Cody Brimhall
 License:: Distributed under the terms of the GNU General Public License, v. 3
+
+== BracketNotation
+
+BracketNotation is a library for parsing strings that have been marked up with
+labeled-bracket notation, of the kind commonly used as short hand for trees when
+discussing sentence structure. It generates an abstract tree representation of
+the parsed sentence, suitable for use in any number of applications.
+
+== Using BracketNotation
+
+Using BracketNotation couldn't be simpler. Simply initialize an instance of
+Parser with the string you want to parse, and call the #parse method. Parser
+performs some basic validation before attempting to evaluate the string. If
+validation fails, Parser raises a ValidationError. If the evaluator encounters a
+syntax error in the string, it raises an EvaluationError.
+
+  require 'bracket_notation'
+  
+  include BracketNotation
+  
+  input = "[S [NP colorless green ideas] [VP [V sleep] [Adv furiously]]]"
+  parser = Parser.new(input)
+  tree = parser.parse
+  
+  puts tree.pretty_print # => S
+                         #    -- NP
+                         #    ---- colorless
+                         #    ---- green
+                         #    ---- ideas
+                         #    -- VP
+                         #    ---- V
+                         #    ------ sleep
+                         #    ---- Adv
+                         #    ------ furiously
+
+== Bugs, Feature Requests, Et Cetera
+
+If you have any bugs, feature requests, or glowing praise, you can find this
+project on GitHub: http://github.com/zbrimhall/bracket_notation.

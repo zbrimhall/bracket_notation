@@ -43,7 +43,8 @@ module BracketNotation # :nodoc:
     def pretty_print
       out = ""
       @depth.times {out << "--"}
-      out << " #{@value}\n"
+      out << " " if @depth > 0
+      out << "#{@value}\n"
     end
   end
 end

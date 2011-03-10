@@ -1,5 +1,11 @@
 = Version History
 
+== 1.0.5 / 2011-03-09:
+
+* Removed an extraneous space from the #pretty_print output that has always
+  bugged me. *So* worth a new release
+* Added information and a usage example to the README
+
 == 1.0.4 / 2011-01-09:
 
 * Added a validation class method to the Parser class to help with error
