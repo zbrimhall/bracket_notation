@@ -26,7 +26,7 @@
 # Copyright:: Copyright (c) 2010 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-require 'test/test_helper'
+require 'test_helper'
 
 class ExpressionTest < Test::Unit::TestCase
   include BracketNotation

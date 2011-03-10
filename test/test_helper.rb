@@ -27,6 +27,5 @@
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 require 'test/unit'
-require 'rubygems'
 require 'shoulda'
-require 'lib/bracket_notation'
+require 'bracket_notation'

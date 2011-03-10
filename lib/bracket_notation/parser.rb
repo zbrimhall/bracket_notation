@@ -54,8 +54,10 @@ module BracketNotation # :nodoc:
       
       chars.each do |char|
         case char
-          when '[': open_count += 1
-          when ']': close_count += 1
+          when '['
+            open_count += 1
+          when ']'
+            close_count += 1
         end
         
         break if open_count < close_count

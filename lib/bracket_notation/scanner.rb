@@ -76,11 +76,16 @@ module BracketNotation # :nodoc:
       token = nil
       while(token.nil?)
         token = case read_char
-          when UNRESERVED_CHARACTER: name_token
-          when LBRACKET_CHARACTER: Token.LBRACKET
-          when RBRACKET_CHARACTER: Token.RBRACKET
-          when EOL_CHARACTER: Token.EOL
-          else nil
+          when UNRESERVED_CHARACTER
+            name_token
+          when LBRACKET_CHARACTER
+            Token.LBRACKET
+          when RBRACKET_CHARACTER
+            Token.RBRACKET
+          when EOL_CHARACTER
+            Token.EOL
+          else
+            nil
         end
       end
       
