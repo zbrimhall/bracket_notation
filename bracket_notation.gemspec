@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bracket_notation}
-  s.version = "1.0.4"
+  s.version = "1.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Cody Brimhall"]
-  s.date = %q{2011-03-08}
+  s.date = %q{2011-03-09}
   s.description = %q{Generates a representation of a syntax tree using a string of bracket notation.}
   s.email = %q{zbrimhall@gmail.com}
   s.extra_rdoc_files = ["CHANGELOG", "COPYING", "README.rdoc", "lib/bracket_notation.rb", "lib/bracket_notation/evaluator.rb", "lib/bracket_notation/expressions.rb", "lib/bracket_notation/expressions/expression.rb", "lib/bracket_notation/expressions/identifier.rb", "lib/bracket_notation/expressions/terminal.rb", "lib/bracket_notation/parser.rb", "lib/bracket_notation/scanner.rb", "lib/bracket_notation/token.rb", "lib/bracket_notation/version.rb"]
