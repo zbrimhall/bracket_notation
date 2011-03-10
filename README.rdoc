@@ -48,5 +48,5 @@ raises an EvaluationError.
 
 == Bugs, Feature Requests, Et Cetera
 
-If you have any bugs, feature requests, or glowing praise, you can find this
-project on GitHub: http://github.com/zbrimhall/bracket_notation.
+If you have any bugs, feature requests, or glowing praise, you can
+find this project on GitHub[http://github.com/zbrimhall/bracket_notation].
