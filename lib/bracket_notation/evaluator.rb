@@ -69,9 +69,12 @@ module BracketNotation # :nodoc:
       
       while((token = next_token).type != Token::RBRACKET)
         expression = case token.type
-          when Token::NAME: Terminal.new(token.value)
-          when Token::LBRACKET: evaluate_phrase
-          else unexpected_token_error
+          when Token::NAME
+            Terminal.new(token.value)
+          when Token::LBRACKET
+            evaluate_phrase
+          else
+            unexpected_token_error
         end
         
         identifier.add_child(expression)

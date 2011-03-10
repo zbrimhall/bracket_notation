@@ -26,4 +26,4 @@
 # Copyright:: Copyright (c) 2010 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-require 'lib/bracket_notation'
+require './lib/bracket_notation'
