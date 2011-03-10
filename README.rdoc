@@ -14,30 +14,37 @@ License:: Distributed under the terms of the GNU General Public License, v. 3
 
 == Using BracketNotation
 
-Using BracketNotation couldn't be simpler. Simply initialize an instance of
-Parser with the string you want to parse, and call the #parse method. Parser
-performs some basic validation before attempting to evaluate the string. If
-validation fails, Parser raises a ValidationError. If the evaluator encounters a
-syntax error in the string, it raises an EvaluationError.
+To use BracketNotation, simply initialize a Parser instance with the string you
+want to parse, and call the #parse method. Parser performs some basic validation
+before attempting to evaluate the string. If validation fails, Parser raises a
+ValidationError. If the evaluator encounters a syntax error in the string, it
+raises an EvaluationError.
 
   require 'bracket_notation'
   
   include BracketNotation
   
   input = "[S [NP colorless green ideas] [VP [V sleep] [Adv furiously]]]"
-  parser = Parser.new(input)
-  tree = parser.parse
   
-  puts tree.pretty_print # => S
-                         #    -- NP
-                         #    ---- colorless
-                         #    ---- green
-                         #    ---- ideas
-                         #    -- VP
-                         #    ---- V
-                         #    ------ sleep
-                         #    ---- Adv
-                         #    ------ furiously
+  begin
+    parser = Parser.new(input)
+    tree = parser.parse
+    
+    puts tree.pretty_print # => S
+                           #    -- NP
+                           #    ---- colorless
+                           #    ---- green
+                           #    ---- ideas
+                           #    -- VP
+                           #    ---- V
+                           #    ------ sleep
+                           #    ---- Adv
+                           #    ------ furiously
+  rescue ValidationError
+    puts "Validation failed: #{$!}"
+  rescue EvaluationError
+    puts "Evaluation failed: #{$!}"
+  end
 
 == Bugs, Feature Requests, Et Cetera
 
