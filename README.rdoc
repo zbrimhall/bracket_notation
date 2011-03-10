@@ -21,7 +21,6 @@ ValidationError. If the evaluator encounters a syntax error in the string, it
 raises an EvaluationError.
 
   require 'bracket_notation'
-  
   include BracketNotation
   
   input = "[S [NP colorless green ideas] [VP [V sleep] [Adv furiously]]]"
