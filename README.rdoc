@@ -1,3 +1,5 @@
+= BracketNotation
+
 BracketNotation is a parser for generating syntax trees from sentences
 annotated with the kind of bracket notation that is commonly used by
 linguists. The result is a tree structure with nodes that describe the phrases
@@ -9,13 +11,6 @@ and small portions of his code have been incorporated in the parser.
 Author:: Cody Brimhall (mailto:brimhall@somuchwit.com)
 Copyright:: Copyright (c) 2010 Cody Brimhall
 License:: Distributed under the terms of the GNU General Public License, v. 3
-
-== BracketNotation
-
-BracketNotation is a library for parsing strings that have been marked up with
-labeled-bracket notation, of the kind commonly used as short hand for trees when
-discussing sentence structure. It generates an abstract tree representation of
-the parsed sentence, suitable for use in any number of applications.
 
 == Using BracketNotation
 
