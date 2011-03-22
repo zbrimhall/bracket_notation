@@ -26,15 +26,44 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
+require 'test_helper'
+
+class PointTest < Test::Unit::TestCase
+  include BracketNotation::Geometry
+  
+  context "a point" do
+    setup do
+      @point1 = Point.new
+      @point2 = Point.new(42, 42)
+      @point3 = Point.new(42, 42)
+      @point4 = Point.new(42, 0)
+      @point5 = Point.new(0, 42)
+    end
     
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+    should "initiaize to {0,0}" do
+      assert @point1.x == 0 and @point1.y == 0
+    end
+    
+    should "be immutable" do
+      assert_raise(NoMethodError) { @point1.x = 0 }
+      assert_raise(NoMethodError) { @point1.y = 0 }
+    end
+    
+    should "base equality on coordinates" do
+      assert_not_equal @point1, @point2
+      assert_equal @point2, @point3
+    end
+    
+    should "create new point by adding to X" do
+      assert_equal @point1.point_by_adding_to_x(42), @point4
+    end
+    
+    should "create new point by adding to y" do
+      assert_equal @point1.point_by_adding_to_y(42), @point5
+    end
+    
+    should "create new point by adding to x and y" do
+      assert_equal @point1.point_by_adding_to_x_and_y(42, 42), @point2
     end
   end
 end

@@ -23,7 +23,7 @@
 # and small portions of his code have been incorporated in the parser.
 #
 # Author:: Cody Brimhall (mailto:brimhall@somuchwit.com)
-# Copyright:: Copyright (c) 2010 Cody Brimhall
+# Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 require 'bracket_notation/evaluator'
@@ -32,3 +32,5 @@ require 'bracket_notation/parser'
 require 'bracket_notation/scanner'
 require 'bracket_notation/token'
 require 'bracket_notation/version'
+require 'bracket_notation/geometry'
+require 'bracket_notation/views'

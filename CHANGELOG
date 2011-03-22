@@ -1,5 +1,11 @@
 = Version History
 
+== 1.1.0 / 2011-03-09:
+
+* Added basic geometry classes: Point, Size, Rect
+* Added basic view classes: Tree, Node, Branch, Leaf
+* Added tests for the new classes and new behavior
+
 == 1.0.5 / 2011-03-09:
 
 * Removed an extraneous space from the #pretty_print output that has always

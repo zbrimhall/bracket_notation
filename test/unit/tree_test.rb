@@ -26,15 +26,42 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
+require 'test_helper'
+
+class TreeTest < Test::Unit::TestCase
+  include BracketNotation::View
+  
+  context "a tree" do
+    setup do
+      @tree = Tree.new("[A [B [E] [F]] [C] [D]]")
+      @root = Node.new(@tree, "A")
+      @child1 = Node.new(@tree, "B")
+      @child2 = Node.new(@tree, "C")
+      @child3 = Node.new(@tree, "D")
+      @child4 = Node.new(@tree, "E")
+      @child5 = Node.new(@tree, "F")
+      
+      @child1.children += [@child4, @child5]
+      @root.children += [@child1, @child2, @child3]
+      @tree.root = @root
+    end
     
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+    should "traverse preorder" do
+      buffer = ""
+      @tree.traverse(:order => :preorder) {|node, depth| buffer << node.content }
+      assert_equal buffer, "ABEFCD"
+    end
+    
+    should "traverse postorder" do
+      buffer = ""
+      @tree.traverse(:order => :postorder) {|node, depth| buffer << node.content }
+      assert_equal buffer, "EFBCDA"
+    end
+    
+    should "traverse breadthfirst" do
+      buffer = ""
+      @tree.traverse(:order => :breadthfirst) {|node, depth| buffer << node.content }
+      assert_equal buffer, "ABCDEF"
     end
   end
 end

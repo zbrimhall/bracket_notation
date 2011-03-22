@@ -26,15 +26,33 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
+require 'test_helper'
+
+class RectTest < Test::Unit::TestCase
+  include BracketNotation::Geometry
+  
+  context "a rect" do
+    setup do
+      @rect1 = Rect.new
+      @rect2 = Rect.new(Point.new(42, 42), Size.new)
+      @rect3 = Rect.new(Point.new, Size.new(42, 42))
+      @rect4 = Rect.new
+    end
     
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+    should "initiaize to {{0,0},{0,0}}" do
+      assert @rect1.origin == Point.new and @rect1.size == Size.new
+    end
+    
+    should "be immutable" do
+      assert_raise(NoMethodError) { @rect1.origin = Point.new }
+      assert_raise(NoMethodError) { @rect1.size = Size.new }
+    end
+    
+    should "base equality on origin and size" do
+      assert_not_equal @rect1, @rect2
+      assert_not_equal @rect1, @rect3
+      assert_not_equal @rect2, @rect3
+      assert_equal @rect1, @rect4
     end
   end
 end

@@ -27,14 +27,27 @@
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
-    
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+  module Geometry # :nodoc:
+    # Rect represents a rectangle by means of origin and size fields.
+    class Rect
+      attr_reader :origin, :size
+      
+      def initialize(origin = Point.new, size = Size.new)
+        @origin = origin
+        @size = size
+      end
+      
+      # Test to see if two points are equal, where equality is defined as having
+      # identical origins and sizes
+      def ==(rvalue)
+        @origin == rvalue.origin && @size == rvalue.size
+      end
+      
+      def inspect
+        "{#{@origin.inspect}, #{@size.inspect}}"
+      end
+      
+      alias :to_s :inspect
     end
   end
 end

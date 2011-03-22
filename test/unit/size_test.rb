@@ -26,15 +26,44 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
+require 'test_helper'
+
+class SizeTest < Test::Unit::TestCase
+  include BracketNotation::Geometry
+  
+  context "a size" do
+    setup do
+      @size1 = Size.new
+      @size2 = Size.new(42, 42)
+      @size3 = Size.new(42, 42)
+      @size4 = Size.new(42, 0)
+      @size5 = Size.new(0, 42)
+    end
     
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+    should "initiaize to {0,0}" do
+      assert @size1.width == 0 and @size1.height == 0
+    end
+    
+    should "be immutable" do
+      assert_raise(NoMethodError) { @size1.width = 0 }
+      assert_raise(NoMethodError) { @size1.height = 0 }
+    end
+    
+    should "base equality on dimensions" do
+      assert_not_equal @size1, @size2
+      assert_equal @size2, @size3
+    end
+    
+    should "create new size by adding to width" do
+      assert_equal @size1.size_by_adding_to_width(42), @size4
+    end
+    
+    should "create new size by adding to height" do
+      assert_equal @size1.size_by_adding_to_height(42), @size5
+    end
+    
+    should "create new size by adding to width and height" do
+      assert_equal @size1.size_by_adding_to_width_and_height(42, 42), @size2
     end
   end
 end

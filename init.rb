@@ -23,7 +23,7 @@
 # and small portions of his code have been incorporated in the parser.
 #
 # Author:: Cody Brimhall (mailto:brimhall@somuchwit.com)
-# Copyright:: Copyright (c) 2010 Cody Brimhall
+# Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 require './lib/bracket_notation'

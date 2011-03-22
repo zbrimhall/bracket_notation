@@ -26,15 +26,7 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
-module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
-    
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
-    end
-  end
-end
+require 'bracket_notation/views/node'
+require 'bracket_notation/views/branch'
+require 'bracket_notation/views/leaf'
+require 'bracket_notation/views/tree'

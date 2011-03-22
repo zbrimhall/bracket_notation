@@ -27,14 +27,43 @@
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
 module BracketNotation # :nodoc:
-  module Version # :nodoc:
-    MAJOR = 1
-    MINOR = 0
-    MAINT = 5
-    
-    # Returns the current version string.
-    def self.to_s;
-      return [MAJOR, MINOR, MAINT].join(".")
+  module Geometry # :nodoc:
+    # Size represents the size of a rectangle using a width and height field.
+    class Size
+      attr_reader :width, :height
+      
+      def initialize(width = 0, height = 0)
+        @width = width
+        @height = height
+      end
+      
+      # Test to see of two sizes are equal, where equality is defined as having
+      # identical widths and heights
+      def ==(rvalue)
+        @width == rvalue.width && @height == rvalue.height
+      end
+      
+      # Create a new size by adding the given amount to the current size's width
+      def size_by_adding_to_width(delta_width)
+        self.class.new(@width + delta_width, @height)
+      end
+      
+      # Create a new size by adding the given amount to the current size's height
+      def size_by_adding_to_height(delta_height)
+        self.class.new(@width, @height + delta_height)
+      end
+      
+      # Create a new size by adding the given amounts to the current size's width
+      # and height
+      def size_by_adding_to_width_and_height(delta_width, delta_height)
+        self.class.new(@width + delta_width, @height + delta_height)
+      end
+      
+      def inspect
+        "{width: #{@width}, height: #{@height}}"
+      end
+      
+      alias :to_s :inspect
     end
   end
 end
