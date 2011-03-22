@@ -26,6 +26,7 @@
 # Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 # License:: Distributed under the terms of the GNU General Public License, v. 3
 
+require 'rmagick'
 require 'bracket_notation/views/node'
 require 'bracket_notation/views/branch'
 require 'bracket_notation/views/leaf'

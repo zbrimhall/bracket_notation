@@ -44,7 +44,7 @@ module BracketNotation # :nodoc:
       end
       
       def inspect
-        "{#{@origin.inspect}, #{@size.inspect}}"
+        "{origin: #{@origin.inspect}, size: #{@size.inspect}}"
       end
       
       alias :to_s :inspect

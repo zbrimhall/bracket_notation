@@ -69,6 +69,8 @@ module BracketNotation # :nodoc:
         options[:depth] ||= 0
         options[:root] ||= @root
         
+        return if @root.nil?
+        
         if [:breadth, :breadthfirst].include? options[:order]
           node_queue = [options[:root]]
           
@@ -89,11 +91,23 @@ module BracketNotation # :nodoc:
           end
         end
       end
+      
+      # Computes the node tree layout, setting the correct origin and dimensions
+      # for each node.
+      def compute_layout
+        layout_nodes
+        
+        old_root_origin_x = @root.rect.origin.x
+        new_root_origin_x = ((@root.subtree_size.width + (@tree_padding * 2)) / 2) - (@root.rect.size.width / 2)
+        delta = new_root_origin_x - old_root_origin_x
+        
+        traverse {|node, depth| node.rect = BracketNotation::Geometry::Rect.new(node.rect.origin.point_by_adding_to_x(delta), node.rect.size) }
+      end
         
       def inspect
         leaf_content = []
-        traverse {|node, depth| leaf_content << node.content if node.is_leaf? }
-        leaf_content.join(" ")
+        traverse {|node, depth| leaf_content << node.content if node.kind_of? Leaf }
+        return "#{@input} >> \"#{leaf_content.join(" ")}\""
       end
       
       alias :to_s :inspect
@@ -103,6 +117,63 @@ module BracketNotation # :nodoc:
           depth.times { print "--" }
           print " " if depth > 0
           puts node.to_s
+        end
+      end
+      
+      private
+      
+      # Walks the node tree, setting origins and dimensions
+      def layout_nodes(node = @root, depth = 0)
+        compute_node_dimensions(node)
+        compute_node_origin_y(node)
+        
+        node.children.each {|child| layout_nodes(child, depth + 1) }
+        
+        compute_subtree_origin_x(node)
+      end
+      
+      def compute_node_dimensions(node)
+        background = Magick::Image.new(500, 250)
+        gc = Magick::Draw.new
+        font = @font_name
+        pointsize = @font_point_size
+        
+        # Write the node content in a scratch image to calculate the text metrics
+        gc.annotate(background, 0, 0, 0, 0, node.content) do |gc|
+          gc.font = font
+          gc.pointsize = pointsize
+          gc.gravity = Magick::CenterGravity
+          gc.stroke = "none"
+        end
+        
+        metrics = gc.get_type_metrics(background, node.content)
+        node.rect = BracketNotation::Geometry::Rect.new(node.rect.origin, BracketNotation::Geometry::Size.new(metrics.width, @font_point_size + (@node_padding * 2)))
+      end
+      
+      def compute_node_origin_y(node)
+        adjusted_origin_y = node.parent.nil? ? @tree_padding : node.parent.rect.origin.y + node.parent.rect.size.height + @node_v_margin
+        new_origin = BracketNotation::Geometry::Point.new(node.rect.origin.x, adjusted_origin_y)
+        node.rect = BracketNotation::Geometry::Rect.new(BracketNotation::Geometry::Point.new(node.rect.origin.x, adjusted_origin_y), node.rect.size)
+      end
+      
+      def compute_subtree_origin_x(node)
+        return if node.kind_of? Leaf or node.children.count == 0
+        
+        node_middle = node.side_middle_top.x
+        children_subtree_widths = node.children.collect {|child| child.subtree_size.width}
+        max_subtree_width = children_subtree_widths.sort.last
+        subtree_width = (max_subtree_width * children_subtree_widths.count) + (@node_h_margin * (node.children.count - 1))
+        subtree_origin_x = node_middle - (subtree_width / 2)
+        
+        node.children.each do |child|
+          child_subtree_width = max_subtree_width
+          child_node_middle = child.side_middle_top.x
+          old_subtree_origin_x = child_node_middle - (child_subtree_width / 2)
+          delta = subtree_origin_x - old_subtree_origin_x
+          
+          traverse(:root => child) {|node, depth| node.rect = BracketNotation::Geometry::Rect.new(node.rect.origin.point_by_adding_to_x(delta), node.rect.size) }
+          
+          subtree_origin_x += max_subtree_width + @node_h_margin
         end
       end
     end

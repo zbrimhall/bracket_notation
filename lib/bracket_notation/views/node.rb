@@ -72,6 +72,25 @@ module BracketNotation # :nodoc:
         node_list << next_up while next_up = next_up.parent
         
         return node_list
+      end      
+      
+      # Return the dimensions of the rect that contains the nod and all of its
+      # descendants
+      def subtree_size
+        return @rect.size if kind_of? Leaf or @children.count == 0
+        
+        new_subtree_size = BracketNotation::Geometry::Size.new(0, @rect.size.height)
+        subtree_widths = []
+        subtree_heights = []
+        
+        @children.each do |child|
+          child_subtree_size = child.subtree_size
+          new_subtree_size = new_subtree_size.size_by_adding_to_width(child_subtree_size.width)
+          subtree_heights << child_subtree_size.height
+        end
+        
+        new_subtree_size = new_subtree_size.size_by_adding_to_width_and_height(@tree.node_h_margin * (children.count - 1), @tree.node_v_margin + subtree_heights.sort.last)
+        return BracketNotation::Geometry::Size.new(@rect.size.width > new_subtree_size.width ? @rect.size.width : new_subtree_size.width, new_subtree_size.height)
       end
       
       # Return the coordinates of the node's top left corner.

@@ -39,4 +39,5 @@ Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.email = "zbrimhall@gmail.com"
   p.ignore_pattern = %w(tmp/* script/* *.bbprojectd/*)
   p.development_dependencies = ['shoulda >=2.11.3']
+  p.runtime_dependencies = ['rmagick >=2.13.1']
 end
