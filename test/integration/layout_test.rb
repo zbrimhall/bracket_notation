@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with BracketNotation.  If not, see <http://www.gnu.org/licenses/>.
 #++
-# BracketNotation is a parser for generating syntax trees from sentences
+# BracketNotation is aru parser for generating syntax trees from sentences
 # annotated with the kind of bracket notation that is commonly used by
 # linguists. The result is a tree structure with nodes that describe the phrases
 # and constituents of the sentence.
@@ -56,29 +56,17 @@ class LayoutTest < Test::Unit::TestCase
     end
     
     should "layout correctly at large point sizes" do
-      size = :large
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :large)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(metrics[:tree_padding], metrics[:tree_padding])
-      correct_root_size = Size.new(24, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      assert_equal correct_root_rect, @root.rect
+      assert_equal Rect.new(20, 20, 24, 60), @root.rect
     end
     
     should "layout correctly at small point sizes" do
-      size = :small
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :small)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(metrics[:tree_padding], metrics[:tree_padding])
-      correct_root_size = Size.new(7, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      assert_equal correct_root_rect, @root.rect
+      assert_equal Rect.new(20, 20, 7, 32), @root.rect, "The root rect is wrong"
     end
   end
   
@@ -95,39 +83,19 @@ class LayoutTest < Test::Unit::TestCase
     end
     
     should "layout correctly at large point sizes" do
-      size = :large
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :large)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(34, metrics[:tree_padding])
-      correct_root_size = Size.new(24, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      correct_child_origin = Point.new(metrics[:tree_padding], metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child_size = Size.new(52, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child_rect = Rect.new(correct_child_origin, correct_child_size)
-      
-      assert_equal correct_root_rect, @root.rect, "The root rect is wrong"
-      assert_equal correct_child_rect, @child.rect, "The child rect is wrong"
+      assert_equal Rect.new(34, 20, 24, 60), @root.rect, "The root rect is wrong"
+      assert_equal Rect.new(20, 110, 52, 60), @child.rect, "The child rect is wrong"
     end
     
     should "layout correctly at small point sizes" do
-      size = :small
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :small)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(24.5, metrics[:tree_padding])
-      correct_root_size = Size.new(7, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      correct_child_origin = Point.new(metrics[:tree_padding], metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child_size = Size.new(16, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child_rect = Rect.new(correct_child_origin, correct_child_size)
-      
-      assert_equal correct_root_rect, @root.rect, "The root rect is wrong"
-      assert_equal correct_child_rect, @child.rect, "The child rect is wrong"
+      assert_equal Rect.new(25, 20, 7, 32), @root.rect, "The root rect is wrong"
+      assert_equal Rect.new(20, 67, 16, 32), @child.rect, "The child rect is wrong"
     end
   end
   
@@ -146,49 +114,21 @@ class LayoutTest < Test::Unit::TestCase
     end
     
     should "layout correctly at large point sizes" do
-      size = :large
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :large)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(84.8984375, metrics[:tree_padding])
-      correct_root_size = Size.new(24, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      correct_child1_origin = Point.new(19.8984375, metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child1_size = Size.new(52, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child1_rect = Rect.new(correct_child1_origin, correct_child1_size)
-      
-      correct_child2_origin = Point.new(122, metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child2_size = Size.new(51.796875, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child2_rect = Rect.new(correct_child2_origin, correct_child2_size)
-      
-      assert_equal correct_root_rect, @root.rect, "The root rect is wrong"
-      assert_equal correct_child1_rect, @child1.rect, "The first child's rect is wrong"
-      assert_equal correct_child2_rect, @child2.rect, "The second child's rect is wrong"
+      assert_equal Rect.new(85, 20, 24, 60), @root.rect, "The root rect is wrong"
+      assert_equal Rect.new(20, 110, 52, 60), @child1.rect, "The first child's rect is wrong"
+      assert_equal Rect.new(122, 110, 52, 60), @child2.rect, "The second child's rect is wrong"
     end
     
     should "layout correctly at small point sizes" do
-      size = :small
-      metrics = DEFAULT_METRICS[size]
-      configure_tree(@tree, :size => size)
+      configure_tree(@tree, :size => :small)
       @tree.compute_layout
       
-      correct_root_origin = Point.new(42.3203125, metrics[:tree_padding])
-      correct_root_size = Size.new(7, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_root_rect = Rect.new(correct_root_origin, correct_root_size)
-      
-      correct_child1_origin = Point.new(19.8203125, metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child1_size = Size.new(16, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child1_rect = Rect.new(correct_child1_origin, correct_child1_size)
-      
-      correct_child2_origin = Point.new(56, metrics[:tree_padding] + correct_root_size.height + metrics[:node_v_margin])
-      correct_child2_size = Size.new(15.640625, metrics[:font_point_size] + (metrics[:node_padding] * 2))
-      correct_child2_rect = Rect.new(correct_child2_origin, correct_child2_size)
-      
-      assert_equal correct_root_rect, @root.rect, "The root rect is wrong"
-      assert_equal correct_child1_rect, @child1.rect, "The first child's rect is wrong"
-      assert_equal correct_child2_rect, @child2.rect, "The second child's rect is wrong"
+      assert_equal Rect.new(43, 20, 7, 32), @root.rect, "The root rect is wrong"
+      assert_equal Rect.new(20, 67, 16, 32), @child1.rect, "The first child's rect is wrong"
+      assert_equal Rect.new(56, 67, 16, 32), @child2.rect, "The second child's rect is wrong"
     end
   end
   

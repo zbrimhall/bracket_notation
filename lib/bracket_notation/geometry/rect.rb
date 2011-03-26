@@ -32,9 +32,20 @@ module BracketNotation # :nodoc:
     class Rect
       attr_reader :origin, :size
       
-      def initialize(origin = Point.new, size = Size.new)
-        @origin = origin
-        @size = size
+      # Initialize the new instance. If the first two parameters are a Point and
+      # a Size, they will be used as the origin and size of the node rect
+      # respectively. If not, it is assumed that they are numeric values
+      # corresponding to the new node's origin coordinates, and they along with
+      # the optional last two parameters will be used to initialize new Point
+      # and Size objects to use for the rect.
+      def initialize(origin_or_x = Point.new, size_or_y = Size.new, width = 0, height = 0)
+        if origin_or_x.kind_of? Point and size_or_y.kind_of? Size
+          @origin = origin_or_x
+          @size = size_or_y
+        else
+          @origin = Point.new(origin_or_x, size_or_y)
+          @size = Size.new(width, height)
+        end
       end
       
       # Test to see if two points are equal, where equality is defined as having

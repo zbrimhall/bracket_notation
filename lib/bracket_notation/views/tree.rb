@@ -52,6 +52,79 @@ module BracketNotation # :nodoc:
         @color_leaf = "green"
       end
       
+      def to_png
+        tree_size = BracketNotation::Geometry::Size.new
+        
+        traverse do |node, depth|
+          right_edge_x = node.corner_top_right.x
+          bottom_edge_y = node.corner_bottom_left.y
+          
+          new_width = [right_edge_x, tree_size.width].max
+          new_height = [bottom_edge_y, tree_size.height].max
+          tree_size = BracketNotation::Geometry::Size.new(new_width, new_height)
+        end
+        
+        canvas = Magick::ImageList.new
+        canvas.new_image(tree_size[:width] + @tree_padding, tree_size[:height] + @tree_padding)
+        
+        nodes = Magick::Draw.new
+        nodes.stroke('black')
+        nodes.stroke_width(0)
+        nodes.stroke_opacity(0)
+        nodes.fill('red')
+        
+        borders = Magick::Draw.new
+        borders.stroke('blue')
+        borders.stroke_width(1)
+        borders.fill_opacity(0)
+        
+        edges = Magick::Draw.new
+        edges.stroke(@color_line)
+        edges.stroke_width(1)
+        
+        triangles = Magick::Draw.new
+        triangles.stroke(@color_line)
+        triangles.stroke_width(1)
+        triangles.fill_opacity(0)
+        
+        labels = Magick::Draw.new
+        labels.font = @font_name
+        labels.pointsize = @font_point_size
+        labels.stroke("none")
+        
+        traverse do |node, depth|
+          subtree_size = node.subtree_size
+          subtree_origin = {:x => (node.middle_top[:x] - (subtree_size[:width] / 2)) - 2, :y => node.origin[:y] - 2}
+          subtree_terminal = {:x => subtree_origin[:x] + subtree_size[:width] + 4, :y => subtree_origin[:y] + subtree_size[:height] + 4}
+          
+          nodes.rectangle(node.origin_x, node.origin_y, node.origin_x + node.size_width, node.origin_y + node.size_height)
+          borders.rectangle(subtree_origin[:x], subtree_origin[:y], subtree_terminal[:x], subtree_terminal[:y])
+          edges.line(node.middle_top[:x], node.middle_top[:y], node.parent.middle_bottom[:x], node.parent.middle_bottom[:y]) unless node.parent.nil? or node.parent.is_summary?
+          
+          if node.is_summary?
+            top_point = "#{node.middle_bottom[:x]},#{node.middle_bottom[:y]}"
+            left_point = "#{node.children.first.corner_top_left[:x]},#{node.children.first.corner_top_left[:y]}"
+            right_point = "#{node.children.last.corner_top_right[:x]},#{node.children.last.corner_top_right[:y]}"
+            
+            triangles.path("M#{top_point} #{left_point} #{right_point} Z")
+          end
+          
+          labels.fill(node.is_leaf? ? @color_leaf : @color_branch)
+          labels.text(node.origin[:x], node.origin[:y] + node.size[:height] - @node_padding, node.content)
+        end
+        
+        # nodes.draw(canvas)
+        # borders.draw(canvas)
+        edges.draw(canvas)
+        triangles.draw(canvas)
+        labels.draw(canvas)
+        
+        canvas.display
+        # canvas.to_blob
+        
+        @should_redraw_tree = false
+      end
+      
       # Traverse the tree, passing each visited node and the current depth to the
       # given block.
       #

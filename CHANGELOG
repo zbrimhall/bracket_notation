@@ -1,10 +1,12 @@
 = Version History
 
-== 1.1.0 / 2011-03-09:
+== 1.1.0 / 2011-03-23:
 
 * Added basic geometry classes: Point, Size, Rect
 * Added basic view classes: Tree, Node, Branch, Leaf
-* Added tests for the new classes and new behavior
+* Added tests for the new classes and new behavior, including unit tests for the
+  geometry classes, functional tests for the view classes, and an integration
+  test for the tree layout algorithm
 
 == 1.0.5 / 2011-03-09:
 

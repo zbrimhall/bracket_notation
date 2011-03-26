@@ -31,7 +31,7 @@ require 'bracket_notation/geometry'
 module BracketNotation # :nodoc:
   module View # :nodoc:
     class Node
-      attr_accessor :tree, :content, :parent, :children, :rect
+      attr_accessor :tree, :content, :parent, :children, :rect, :align_to_grid
       
       def initialize(tree, content)
         @tree = tree
@@ -39,6 +39,21 @@ module BracketNotation # :nodoc:
         @parent = nil
         @children = []
         @rect = BracketNotation::Geometry::Rect.new
+        @align_to_grid = true
+      end
+      
+      # Custom setter for the node rect. If @align_to_grid is true, rect co-
+      # ordinates and dimensions will be rounded to the nearest integer.
+      def rect=(rvalue)
+        return if @rect == rvalue
+        
+        @rect = if @align_to_grid
+          adjusted_origin = BracketNotation::Geometry::Point.new(rvalue.origin.x.round, rvalue.origin.y.round)
+          adjusted_size = BracketNotation::Geometry::Size.new(rvalue.size.width.round, rvalue.size.height.round)
+          BracketNotation::Geometry::Rect.new(adjusted_origin, adjusted_size)
+        else
+          rvalue
+        end
       end
     
       # Return the node's left sibling, or nil if the node is the leftmost child of

@@ -12,13 +12,13 @@ Author:: Cody Brimhall (mailto:brimhall@somuchwit.com)
 Copyright:: Copyright (c) 2010-2011 Cody Brimhall
 License:: Distributed under the terms of the GNU General Public License, v. 3
 
-== Using BracketNotation
+== Using the Parser
 
-To use BracketNotation, simply initialize a Parser instance with the string you
-want to parse, and call the #parse method. Parser performs some basic validation
-before attempting to evaluate the string. If validation fails, Parser raises a
-ValidationError. If the evaluator encounters a syntax error in the string, it
-raises an EvaluationError.
+To use the BracketNotation parser, simply initialize a Parser instance with the
+string you want to parse, and call the #parse method. Parser performs some basic
+validation before attempting to evaluate the string. If validation fails, Parser
+raises a ValidationError. If the evaluator encounters a syntax error in the
+string, it raises an EvaluationError.
 
   require 'bracket_notation'
   include BracketNotation
@@ -44,6 +44,30 @@ raises an EvaluationError.
   rescue EvaluationError
     puts "Evaluation failed: #{$!}"
   end
+
+== Using the Geometry Classes
+
+The geometry classes are a set of simple constructions to make working with
+layouts in a cartesian plane a little easier. The three classes are Point, Size
+and Rect; they are immutable, and their use is straightforward:
+
+  require 'bracket_notation'
+  include BracketNotation::Geometry
+  
+  point1 = Point.new(0, 0)                   => {x: 0, y: 0}
+  point2 = point1.point_by_adding_to_x(42)   => {x: 42, y: 0}
+  size1 = Size.new(0, 0)                     => {width: 0, height: 0}
+  size2 = size1.size_by_adding_to_height(42) => {width: 0, height: 42}
+  rect1 = Rect.new(point1, size2)            => {origin: {x: 0, y: 0}, size: {width: 0, height: 42}}
+  rect2 = Rect.new(42, 42, 42, 42)           => {origin: {x: 42, y: 42}, size: {width: 42, height: 42}}
+
+== Using the View Classes
+
+In order to make it easier to represent a tree visually, BracketNotation
+includes some basic view classes: Node (and its subclasses Branch and Leaf) and
+Tree. These classes implement a basic n-ary tree, with methods and attributes
+for laying the nodes out on a cartesian plane and tracking their locations and
+dimensions. See the documentation for Tree and Node for details.
 
 == Bugs, Feature Requests, Et Cetera
 
