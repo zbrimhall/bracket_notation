@@ -30,6 +30,7 @@ module BracketNotation # :nodoc:
   module View # :nodoc:
     class Tree
       attr_accessor :input, :root, :font_name, :font_point_size, :tree_padding, :node_h_margin, :node_v_margin, :node_padding, :color_bg, :color_fg, :color_line, :color_branch, :color_leaf
+      attr_accessor :draw_nodes, :draw_borders, :draw_edges, :draw_triangles, :draw_labels
       
       # Throws :prune, which is caught by #traverse, signaling that method to cease
       # visiting nodes on the current branch.
@@ -50,9 +51,25 @@ module BracketNotation # :nodoc:
         @color_line = "red"
         @color_branch = "blue"
         @color_leaf = "green"
+        
+        @draw_nodes = false
+        @draw_borders = false
+        @draw_edges = true
+        @draw_triangles = true
+        @draw_labels = true
       end
       
-      def to_png
+      def populate
+        @root = Node.populate_tree(self)
+      end
+      
+      # Generate the tree image data.
+      #
+      # Options are:
+      # * <tt>:format</tt> - The format to pass to RMagick. Default is +:svg+.
+      #
+      def to_blob(options = {})
+        options[:format] ||= :svg
         tree_size = BracketNotation::Geometry::Size.new
         
         traverse do |node, depth|
@@ -65,7 +82,7 @@ module BracketNotation # :nodoc:
         end
         
         canvas = Magick::ImageList.new
-        canvas.new_image(tree_size[:width] + @tree_padding, tree_size[:height] + @tree_padding)
+        canvas.new_image(tree_size.width + @tree_padding, tree_size.height + @tree_padding)
         
         nodes = Magick::Draw.new
         nodes.stroke('black')
@@ -94,35 +111,32 @@ module BracketNotation # :nodoc:
         
         traverse do |node, depth|
           subtree_size = node.subtree_size
-          subtree_origin = {:x => (node.middle_top[:x] - (subtree_size[:width] / 2)) - 2, :y => node.origin[:y] - 2}
-          subtree_terminal = {:x => subtree_origin[:x] + subtree_size[:width] + 4, :y => subtree_origin[:y] + subtree_size[:height] + 4}
+          subtree_origin = Point.new((node.side_middle_top.x - (subtree_size.width / 2)) - 2, node.rect.origin.y - 2)
+          subtree_terminal = Point.new(subtree_origin.x + subtree_size.width + 4, subtree_origin.y + subtree_size.height + 4)
           
-          nodes.rectangle(node.origin_x, node.origin_y, node.origin_x + node.size_width, node.origin_y + node.size_height)
-          borders.rectangle(subtree_origin[:x], subtree_origin[:y], subtree_terminal[:x], subtree_terminal[:y])
-          edges.line(node.middle_top[:x], node.middle_top[:y], node.parent.middle_bottom[:x], node.parent.middle_bottom[:y]) unless node.parent.nil? or node.parent.is_summary?
+          nodes.rectangle(node.rect.origin.x, node.rect.origin.y, node.rect.origin.x + node.rect.size.width, node.rect.origin.y + node.rect.size.height)
+          borders.rectangle(subtree_origin.x, subtree_origin.y, subtree_terminal.x, subtree_terminal.y)
+          edges.line(node.side_middle_top.x, node.side_middle_top.y, node.parent.side_middle_bottom.x, node.parent.side_middle_bottom.y) unless node.parent.nil? or node.parent.roll_up
           
-          if node.is_summary?
-            top_point = "#{node.middle_bottom[:x]},#{node.middle_bottom[:y]}"
-            left_point = "#{node.children.first.corner_top_left[:x]},#{node.children.first.corner_top_left[:y]}"
-            right_point = "#{node.children.last.corner_top_right[:x]},#{node.children.last.corner_top_right[:y]}"
+          if node.kind_of? Branch and node.roll_up
+            top_point = "#{node.side_middle_bottom.x},#{node.side_middle_bottom.y}"
+            left_point = "#{node.children.first.corner_top_left.x},#{node.children.first.corner_top_left.y}"
+            right_point = "#{node.children.last.corner_top_right.x},#{node.children.last.corner_top_right.y}"
             
             triangles.path("M#{top_point} #{left_point} #{right_point} Z")
           end
           
-          labels.fill(node.is_leaf? ? @color_leaf : @color_branch)
-          labels.text(node.origin[:x], node.origin[:y] + node.size[:height] - @node_padding, node.content)
+          labels.fill(node.kind_of?(Leaf) ? @color_leaf : @color_branch)
+          labels.text(node.rect.origin.x, node.rect.origin.y + node.rect.size.height - @node_padding, node.content)
         end
         
-        # nodes.draw(canvas)
-        # borders.draw(canvas)
-        edges.draw(canvas)
-        triangles.draw(canvas)
-        labels.draw(canvas)
+        nodes.draw(canvas) if @draw_nodes
+        borders.draw(canvas) if @draw_borders
+        edges.draw(canvas) if @draw_edges
+        triangles.draw(canvas) if @draw_triangles
+        labels.draw(canvas) if @draw_labels
         
-        canvas.display
-        # canvas.to_blob
-        
-        @should_redraw_tree = false
+        canvas.to_blob { self.format = options[:format].to_s }
       end
       
       # Traverse the tree, passing each visited node and the current depth to the
@@ -180,7 +194,7 @@ module BracketNotation # :nodoc:
       def inspect
         leaf_content = []
         traverse {|node, depth| leaf_content << node.content if node.kind_of? Leaf }
-        return "#{@input} >> \"#{leaf_content.join(" ")}\""
+        return "#{@input} / \"#{leaf_content.join(" ")}\""
       end
       
       alias :to_s :inspect

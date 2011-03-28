@@ -29,7 +29,8 @@
 ($:.unshift File.expand_path(File.join( File.dirname(__FILE__), 'lib' ))).uniq!
 
 require 'echoe'
-require 'bracket_notation/version'
+require 'bracket_notation'
+require 'irb'
 
 Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.description = "Generates a representation of a syntax tree using a string of bracket notation."
@@ -40,4 +41,22 @@ Echoe.new('bracket_notation', BracketNotation::Version) do |p|
   p.ignore_pattern = %w(tmp/* script/* *.bbprojectd/*)
   p.development_dependencies = ['shoulda >=2.11.3']
   p.runtime_dependencies = ['rmagick >=2.13.1']
+end
+
+namespace :irb do
+  task :default => [:triangles]
+  
+  desc "Launch an IRB session that can use this copy of BracketNotation"
+  task :triangles do
+    include BracketNotation
+    include BracketNotation::View
+    include BracketNotation::Geometry
+    
+    @tree = Tree.new("[S [NP the boy] [VP [V ate] [NP the bread]]]")
+    @tree.populate
+    @tree.compute_layout
+    
+    ARGV.clear
+    IRB.start
+  end
 end

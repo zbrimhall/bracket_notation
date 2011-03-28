@@ -33,6 +33,19 @@ module BracketNotation # :nodoc:
     class Node
       attr_accessor :tree, :content, :parent, :children, :rect, :align_to_grid
       
+      # Generates a node tree. If no root_expression is given, the tree input string
+      # is parsed and used as the root expression.
+      def self.populate_tree(tree, rexpr = nil)
+        rexpr ||= Parser.new(tree.input).parse
+        
+        case rexpr
+          when Identifier
+            new_branch(tree, rexpr)
+          when Terminal
+            new_leaf(tree, rexpr)
+        end
+      end
+      
       def initialize(tree, content)
         @tree = tree
         @content = content
@@ -146,6 +159,32 @@ module BracketNotation # :nodoc:
       # Return the coordinates of the middle of the node's left side.
       def side_middle_left
         BracketNotation::Geometry::Point.new(@rect.origin.x, @rect.origin.y + (@rect.size.height / 2))
+      end
+      
+      private
+      
+      def self.new_branch(tree, identifier)
+        branch = Branch.new(tree, identifier.value)
+        
+        if identifier.children.count > 1 and identifier.children.all? {|child| child.kind_of? Terminal }
+          composite_value = identifier.children.collect {|child| child.value }.join(" ")
+          new_node = populate_tree(tree, Terminal.new(composite_value))
+          new_node.parent = branch
+          branch.children << new_node
+          branch.roll_up = true
+        else
+          identifier.children.each do |child|
+            new_node = populate_tree(tree, child)
+            new_node.parent = branch
+            branch.children << new_node
+          end
+        end
+        
+        return branch
+      end
+      
+      def self.new_leaf(tree, terminal)
+        return Leaf.new(tree, terminal.value)
       end
     end
   end

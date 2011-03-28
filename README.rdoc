@@ -54,12 +54,12 @@ and Rect; they are immutable, and their use is straightforward:
   require 'bracket_notation'
   include BracketNotation::Geometry
   
-  point1 = Point.new(0, 0)                   => {x: 0, y: 0}
-  point2 = point1.point_by_adding_to_x(42)   => {x: 42, y: 0}
-  size1 = Size.new(0, 0)                     => {width: 0, height: 0}
-  size2 = size1.size_by_adding_to_height(42) => {width: 0, height: 42}
-  rect1 = Rect.new(point1, size2)            => {origin: {x: 0, y: 0}, size: {width: 0, height: 42}}
-  rect2 = Rect.new(42, 42, 42, 42)           => {origin: {x: 42, y: 42}, size: {width: 42, height: 42}}
+  point1 = Point.new(0, 0)                   # => {x: 0, y: 0}
+  point2 = point1.point_by_adding_to_x(42)   # => {x: 42, y: 0}
+  size1 = Size.new(0, 0)                     # => {width: 0, height: 0}
+  size2 = size1.size_by_adding_to_height(42) # => {width: 0, height: 42}
+  rect1 = Rect.new(point1, size2)            # => {origin: {x: 0, y: 0}, size: {width: 0, height: 42}}
+  rect2 = Rect.new(42, 42, 42, 42)           # => {origin: {x: 42, y: 42}, size: {width: 42, height: 42}}
 
 == Using the View Classes
 

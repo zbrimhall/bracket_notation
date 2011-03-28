@@ -1,9 +1,7 @@
 CHANGELOG
 COPYING
-Manifest
 README.rdoc
 Rakefile
-bracket_notation.gemspec
 init.rb
 lib/bracket_notation.rb
 lib/bracket_notation/evaluator.rb
@@ -37,3 +35,4 @@ test/unit/point_test.rb
 test/unit/rect_test.rb
 test/unit/size_test.rb
 test/unit/token_test.rb
+Manifest

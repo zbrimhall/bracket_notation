@@ -1,5 +1,11 @@
 = Version History
 
+== 1.1.1 / DATE
+
+* Finished initial implementation of Tree#to_blob, for generating an image of
+  the Tree view class
+* More documentation cleanup
+
 == 1.1.0 / 2011-03-23:
 
 * Added basic geometry classes: Point, Size, Rect
